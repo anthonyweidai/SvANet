@@ -1,0 +1,36 @@
+# data
+*.csv
+*.xlsx
+*.zip
+*.txt
+*.pth
+*.pkl
+*.exe
+*.pdf
+
+# File
+
+test*.py
+temp.py
+
+# Folder
+exp
+test
+temp
+cloud
+clound
+Backup
+runs
+output
+dataset
+savemodel
+savemodel_ref
+.vscode
+__pycache__
+resultPlot/data
+shell/erst
+
+# Keep
+!requirements.txt
+
+!lib/data/dataset
