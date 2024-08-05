@@ -17,20 +17,20 @@ To install the SvANet implementation, please follow the detailed instructions in
 
 Please refer to [DATA.md](readme/DATA.md) for guidelines on preparing the datasets for benchmarking and training.
 
-Execute the training and evaluation processes using the configuration settings in [main.sh](shell/main.sh) script. Before training, please download the pretrained model in [torchvision](https://download.pytorch.org/models/resnet50-11ad3fa6.pth).
+To initiate the training and evaluation processes, utilize the configuration settings provided in the [main.sh](shell/main.sh) script. Prior to commencing the training, ensure that you have downloaded the pretrained model from [torchvision](https://download.pytorch.org/models/resnet50-11ad3fa6.pth).
 
-<!-- 
+
 ### *Results for Datasets with Diverse Object Sizes*  
 
 <p align="left"> <img src=readme/segmentation_all_sizes.jpg align="center" width="1080">
 
-<p align="center"> <img src=readme/trends.jpg align="center" width="640">
+<!-- <p align="center"> <img src=readme/trends.jpg align="center" width="640"> -->
 
 ### *Results for the Dataset for Only Ultra-small Objects*  
 
 <p align="left"> <img src=readme/segmentation_ultra_small.jpg align="center" width="540">
 
-### *Negative Case Analysis*
+<!-- ### *Negative Case Analysis*
 
 <p align="left"> <img src=readme/vis.jpg align="center" width="1080">
 
@@ -38,12 +38,14 @@ Execute the training and evaluation processes using the configuration settings i
 
 <p align="left"> <img src=readme/vis_sup2.jpg align="center" width="1080"> -->
 
+
 ### Ablation studies
 
 For detailed settings of the ablation study and additional experiments, refer to refer to the scripts [ablation.sh](shell/ablation.sh) and [ablation_extra.sh](shell/ablation_extra.sh).
 
 ## Inference
 
+To perform inference evaluation on various datasets, it is important to organize the data according to the guidelines provided in [DATA.md](readme/DATA.md). After completing the training process, refrain from making any modifications to the output folder. Instead, utilize [tinyObjectsValidation.py](tools/tinyObjectsValidation) for evaluation purposes. Please remember to update the "RootPath" variable in the script to match the location of your output folder.
 
 ## Citation
 
