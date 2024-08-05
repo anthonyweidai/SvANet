@@ -45,7 +45,7 @@ For detailed settings of the ablation study and additional experiments, refer to
 
 ## Inference
 
-To perform inference evaluation on various datasets, it is important to organize the data according to the guidelines provided in [DATA.md](readme/DATA.md). After completing the training process, refrain from making any modifications to the output folder. Instead, utilize [tinyObjectsValidation.py](tools/tinyObjectsValidation) for evaluation purposes. Please remember to update the "RootPath" variable in the script to match the location of your output folder.
+To perform inference evaluation on various datasets, it is important to organize the data according to the guidelines provided in [DATA.md](readme/DATA.md). After completing the training process, refrain from making any modifications to the output folder. Instead, utilize [tinyObjectsValidation.py](tools/tinyObjectsValidation.py) for evaluation purposes. Please remember to update the "RootPath" variable in the script to match the location of your output folder.
 
 ## Citation
 
