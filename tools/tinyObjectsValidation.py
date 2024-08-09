@@ -29,8 +29,10 @@ def initAndRunTinyValer(opt, FirstKeepIds, FolderPath, Split, ValSplit):
     # dataset attribute should not be set after DataLoader is initialized
     KeepTestSet = [Engine.TestSet[i] for i in FirstKeepIds]
     TestImgs = getMyDataset(opt, KeepTestSet, IsTraining=False)
-    Engine.InferDL = DataLoader(TestImgs, Engine.LoaderBatch, num_workers=Engine.NumWorkers, shuffle=False, 
-                                pin_memory=Engine.PinMemory, collate_fn=Engine.CollateFn, drop_last=opt.drop_last)
+    Engine.InferDL = DataLoader(
+        TestImgs, Engine.LoaderBatch, num_workers=Engine.NumWorkers, shuffle=False, 
+        pin_memory=Engine.PinMemory, collate_fn=Engine.CollateFn, drop_last=opt.drop_last
+    )
     
     Target, Prediction = Engine.run()
     
@@ -73,8 +75,8 @@ def computeMetrics(Ratio, Prediction: Tensor, Target: Tensor, KeepIdx, Eps):
 @torch.inference_mode()
 def traversalTinyRatio(
     opt, TinyRatios, AreaRatios, 
-    Exp, Prediction, Target, KeepTestSet, OutFilePath, Eps,
-    KeepThred=False,
+    Exp, Prediction, Target, KeepTestSet, 
+    OutFilePath, Eps, KeepThred=False,
 ):
     for r in TinyRatios:
         # keep only tiny object and those with 0 area
@@ -107,8 +109,8 @@ def traversalTinyRatio(
 @torch.inference_mode()
 def computeRatioRangeMetrics(
     opt, TinyRatios, AreaRatios, 
-    FirstKeepIds, Exp, ExpPath, Split=0, OutFilePath="tiny_metrics.csv", 
-    AverageMode=True, Eps=1e-7,
+    FirstKeepIds, Exp, ExpPath, Split=0, 
+    OutFilePath="tiny_metrics.csv",  Eps=1e-7,
 ):
     """
     Compute the calculated metrics only in tiny objects (use ratio).
@@ -128,16 +130,15 @@ def computeRatioRangeMetrics(
         ValSplits.remove("Average")
     ValSplits = [int(re.findall(r"valrpt_(\d+)", s)[0]) for s in ValSplits]
     
-    if AverageMode:
-        # append tiny metric values in metric csv file
-        for s in ValSplits:
-            Target, Prediction, KeepTestSet = \
-                initAndRunTinyValer(opt, FirstKeepIds, FolderPath, Split, s)
-            traversalTinyRatio(
-                opt, TinyRatios, AreaRatios, 
-                Exp, Prediction, Target, KeepTestSet, 
-                OutFilePath.replace(".csv", "_valrpt%d.csv" % s), Eps,
-            )
+    # append tiny metric values in metric csv file
+    for s in ValSplits:
+        Target, Prediction, KeepTestSet = \
+            initAndRunTinyValer(opt, FirstKeepIds, FolderPath, Split, s)
+        traversalTinyRatio(
+            opt, TinyRatios, AreaRatios, 
+            Exp, Prediction, Target, KeepTestSet, 
+            OutFilePath.replace(".csv", "_valrpt%d.csv" % s), Eps,
+        )
         
     return ValSplits
 
@@ -147,15 +148,13 @@ if __name__ == "__main__":
     opt.gpus = "0" # "-1"
         
     SetNames = [
-        "ISIC2018T1", 
-        "PolypGen", "ISIC2018T1", 
+        "FIVES", "ISIC2018T1", "PolypGen", 
         "ATLAS", "KiTS23", "TissueNet",  
         "SpermHealth", 
     ]
     TinyRatios = [0.5, 1, 2, 3, 5, 10, 100]
     
     RootPath = "exp/segmentation"
-    AverageMode = True
     for n in SetNames:
         opt.setname = n
         
@@ -189,10 +188,9 @@ if __name__ == "__main__":
             ValSplits = computeRatioRangeMetrics(
                 opt, TinyRatios, AreaRatios, FirstKeepIds, e, 
                 ExpPath=ExpPath, OutFilePath=OutFilePath, 
-                AverageMode=AverageMode,
             )
         
-        if AverageMode and len(ValSplits) > 0:
+        if len(ValSplits) > 0:
             # average all models' tiny metric into the same csv
             MetadataGroup = []
             for s in ValSplits:
