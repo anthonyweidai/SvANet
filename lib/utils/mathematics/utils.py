@@ -18,79 +18,6 @@ def makeDivisible(v: float, divisor: int, min_value: Optional[int] = None) -> in
     return new_v
 
 
-def removeOutliers(Data, OutlierConstant=1.5):
-    if isinstance(Data[0], np.bool_):
-        # remove outliers in bool array
-        NewArr = np.arange(len(Data))
-        NewArr = NewArr[Data]
-        NewArr, KeepIndex = removeOutliers(NewArr)
-        
-        NewBool = np.asarray(Data)
-        for i in range(len(Data)):
-            if i not in NewArr:
-                NewBool[i] = False
-        return NewBool, KeepIndex
-    else:
-        # remove outliers in numpy array
-        Temp = np.asarray(Data)
-        Upper = np.percentile(Temp, 75)
-        Lower = np.percentile(Temp, 25)
-        IQR = (Upper - Lower) * OutlierConstant
-        QuartileSet = (Lower - IQR, Upper + IQR)
-        
-        KeepIndex = np.where((Temp >= QuartileSet[0]) & (Temp <= QuartileSet[1]))
-        return Temp[KeepIndex].tolist(), KeepIndex[0]
-
-
-def removeOutliersV2(Data, m=2.):
-    if isinstance(Data[0], np.bool_):
-        # remove outliers in bool array
-        NewArr = np.arange(len(Data))
-        NewArr = NewArr[Data]
-        NewArr, KeepIndex = removeOutliersV2(NewArr)
-        
-        NewBool = np.asarray(Data)
-        for i in range(len(Data)):
-            if i not in NewArr:
-                NewBool[i] = False
-        return NewBool, KeepIndex
-    else:
-        Data = np.asarray(Data)
-        Dist = np.abs(Data - np.median(Data))
-        MeanDev = np.median(Dist)
-        s = Dist / (MeanDev if MeanDev else 1.)
-        
-        KeepIndex = np.where(s < m)
-        return Data[KeepIndex].tolist(), KeepIndex
-
-
-def normaliseVetor(Vector):
-    ''' adapted from https://stackoverflow.com/a/40360416/15329637 '''
-    if not isinstance(Vector, np.ndarray):
-        Vector = np.asarray(Vector)
-    
-    NormV = np.linalg.norm(Vector)
-    if NormV == 0:
-        NormV = np.finfo(Vector.dtype).eps
-    return Vector / NormV
-
-
-def keepIndex2Bool(KeepIndex, Len):
-    ''' Invert keepindex to remove index
-    # _, KeepIndex = removeOutliersV2(RemainedSumDist)
-    # BoolIndex = keepIndex2Bool(KeepIndex, len(RemainedSumDist))W
-    # BoolIndex = np.invert(BoolIndex) # get outlier index
-    '''
-    if isinstance(KeepIndex, tuple):
-        # for numpy where format
-        KeepIndex = KeepIndex[0]
-        
-    BoolIndex = np.full((Len,), False)
-    for i in KeepIndex:
-        BoolIndex[i] = True
-    return BoolIndex
-
-
 def averageBestMetrics(BestMetrics, AvgSupMode=True):
     if isinstance(BestMetrics, list):
         Flag1 = 1
@@ -134,11 +61,3 @@ def inhomogeneousArithmetic(Data, Type='mean'):
         return np.asarray([np.min(d) if d.any() else 0 for d in Data])
     else:
         NotImplementedError
-
-
-def bincount2DVectorized(Array):
-    # binary count of generic n-dims
-    # https://stackoverflow.com/a/46256361/15329637 
-    N = Array.max() + 1
-    ArrayOffset = Array + np.arange(Array.shape[0])[:, None] * N
-    return np.bincount(ArrayOffset.ravel(), minlength=Array.shape[0] * N).reshape(-1, N)

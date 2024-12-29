@@ -61,16 +61,6 @@ def getBestModelPath(FolderPath, ValSplit=None):
         return FolderPath + SaveModel
 
 
-def getMetaLogPath(MetaRootPath):
-    Metadata = None
-    for File in os.listdir(MetaRootPath):
-        if File.endswith(".csv") and "log_" in File:
-            Metadata = MetaRootPath + "/" + File # /log_rotation_shuffle.csv
-            print("Metadata is %s" % Metadata)
-            break
-    return Metadata
-
-
 def getExpPath(opt, RootPath):
     # get exp folder path and folder name list
     ## state printing
@@ -133,44 +123,6 @@ def expFolderCreator(BaseFolder, TaskType, ExpLevel="", TargetExp=None, Mode=0):
     return DestPath, ExpCount
 
 
-def getWeightName(MetaRow: Dict, TargetExp):
-    SupMethod = MetaRow["Supervision"]
-    ModelName = MetaRow["Model"]
-
-    Epochs = MetaRow["NumEpochs"]
-    BatchSize = MetaRow["BatchSize"]
-    Loss = MetaRow["Loss"]
-    MixMethod = MetaRow.get("MixMethod", "")
-    MixMinCropRatio = MetaRow.get("MixMinCropRatio", "")
-    MixMethodStr = ""
-    if MixMethod:
-        if MixMethod != "-":
-            MixMethodStr = ("_%s%s" % (MixMethod, MixMinCropRatio.replace("0.", "")))
-    
-    # general string
-    SaveStr = ""
-    IdenStr = ""
-    
-    HeadName = ""
-    if "segmentation" in MetaRow["Task"]:
-        HeadName = "_" + MetaRow["SegModel"]
-        if "encoder_decoder" in HeadName:
-            HeadName = "_" + MetaRow["SegHead"]
-        else:
-            ModelName = ""
-    SaveStr += "e" + Epochs
-    SaveStr += "bs%s%s" % (BatchSize, "_")
-    SaveStr += (Loss + "_") if Loss != "cross_entropy" else ""
-    # SaveStr += "_cw" if "false" not in ClassWeight.lower() else ""
-    # SaveStr += "_lb" + LabelSmooth if "0" not in LabelSmooth else ""
-    
-    SaveStr += "Exp%s" % TargetExp
-    
-    SaveName = "%s_%s%s%s_%s%s" % (SupMethod, ModelName, HeadName, MixMethodStr, IdenStr, SaveStr)
-    
-    return SaveName
-
-
 def getOnlyFileNames(Path):
     # get only file names
     # # equivalent code:
@@ -196,18 +148,6 @@ def getOnlyFolderDirs(Path):
     return [os.path.join(Path, n) for n in FolderNames]
 
 
-def removeFoldersAndFiles(Dirs):
-    if isinstance(Dirs, str):
-        Dirs = [Dirs]
-    
-    for d in Dirs:
-        if os.path.isfile(d):
-            os.remove(d)
-        elif os.path.isdir(d):
-            shutil.rmtree(d)
-    return
-
-
 def moveFiles(Files, DestPath):
     # move list of files to a destination
     if isinstance(Files, str):
@@ -218,22 +158,6 @@ def moveFiles(Files, DestPath):
             # overwrite if file is existed
             shutil.copy(f, DestPath)
     return
-
-
-def renameFilesWithMap(Files, NameMap):
-    # rename files with name map, one time for each string
-    if isinstance(Files, str):
-        Files = [Files]
-    
-    OutFiles = deepcopy(Files)
-    for i, f in enumerate(Files):
-        for s, t in zip(NameMap[0], NameMap[1]):
-            if "%s_" % s in f:
-                # prevent from wrongly replaced digits 
-                OutFiles[i] = OutFiles[i].replace(s, t)
-                break
-    
-    return OutFiles
 
 
 def adaptValTest(DatasetPath, ValidStr=["test", "val"]):

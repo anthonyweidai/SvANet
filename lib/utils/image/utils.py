@@ -5,9 +5,6 @@ from typing import List, Optional
 
 import cv2
 from PIL import Image
-import matplotlib.pyplot as plt
-
-from torch import Tensor
 
 
 def readImagePil(ImgPath) -> Image.Image:
@@ -65,31 +62,6 @@ def pil2OpenCV(Img: Image.Image) -> np.ndarray:
         raise ValueError(f"unhandled image color mode: {ImgMode}")
 
     return CVImg, ImgMode
-    
-
-def visuliseImg(Img):
-    from torchvision import transforms as T
-    
-    if isinstance(Img, Tensor):
-        Img = T.ToPILImage()(Img)
-    elif isinstance(Img, np.ndarray):
-        if np.sum(Img > 1) == 0:
-            Img = Image.fromarray(Img * 255.)
-        else:
-            Img = Image.fromarray(Img)
-    elif isinstance(Img, Image.Image):
-        # may have error in showing image mask, e.g., in ATLAS
-        if Img.mode == "P":
-            Img = Img.convert("RGB")
-    
-    Img.show()
-    
-
-def visuliseHist(Data):
-    # create histogram
-    plt.hist(Data)
-    # display histogram
-    plt.show()
     
 
 class Colormap(object):
@@ -203,13 +175,3 @@ def largeGrey2RGB(Img, MaxPixVal=None):
     Img = Img.astype("float32") / MaxPixVal * 255
     # Img = cv2.normalize(Img, Img, 0, 255, cv2.NORM_MINMAX)
     return Img.astype("uint8")
-
-
-def constantRatioResize(Img: Image.Image, TargetSize: int=1024, Resample=Image.BICUBIC):
-    # resize image keeping constant height:width
-    if max(Img.size) <= TargetSize:
-        return Img
-    else:
-        Ratio = TargetSize / max(Img.size)
-        Size = [min(round(s * Ratio), TargetSize) for s in Img.size]
-        return Img.resize(Size, resample=Resample)
