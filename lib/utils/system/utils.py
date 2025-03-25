@@ -36,7 +36,7 @@ def seedSetting(RPMode, Seed=999):
 def deviceInit(opt):
     DataParallel = False
     CUDA_AVAI = torch.cuda.is_available()
-    if CUDA_AVAI and opt.gpus != -1:
+    if CUDA_AVAI and -1 not in opt.gpus:
         if len(opt.gpus) > 1:
             DeviceStr = 'cuda'
             DataParallel = True
