@@ -14,7 +14,7 @@ class Opts(object):
         
         # system
         self.Parser.add_argument("--gpus", default="0", 
-                                help="-1 for CPU, use comma for multiple gpus")
+                                help="-1 for CPU, use a comma for multiple GPUs")
         self.Parser.add_argument("--num_workers", type=int, default=None,
                                 help="dataloader threads. 0 for single-thread")
         self.Parser.add_argument("--pin_memory", action="store_false",
@@ -35,19 +35,19 @@ class Opts(object):
         self.Parser.add_argument("--get_path_mode", type=int, default=None,
                                 help="The mode of calling images from their path")
         self.Parser.add_argument("--num_repeat", type=int, default=None,
-                                help="The number of repeated split") # k-folds validation
+                                help="The number of repeated splits") # k-folds validation
         self.Parser.add_argument("--resize_shape", type=int, default=None,
                                 help="The resize scale of transforms")
         self.Parser.add_argument("--pre_resize", action="store_true",
-                                help="Is the dataset aleady pre-processed?")
+                                help="Is the dataset already pre-processed?")
         self.Parser.add_argument("--class_names", type=list, default=None,
-                                help="The list of class name")
+                                help="The list of class names")
         self.Parser.add_argument("--collate_fn_name", type=str, default=None,
                                 help="The collate function name")
         self.Parser.add_argument("--drop_last", action="store_true",
-                                help="Drop last in data loader, due to batch normlisation, \
+                                help="Drop last in data loader, due to batch normalisation, \
                                 the value will be different for the same dataset for \
-                                    different batch size")
+                                different batch size")
         self.Parser.add_argument("--loader_shuffle", action="store_false",
                                 help="Shuffle data order while loading?")
         self.Parser.add_argument("--random_aug_order", action="store_true", 
@@ -88,7 +88,7 @@ class Opts(object):
         self.Parser.add_argument("--use_sep_conv", action="store_true",
                                 help="True | False") # deeplabv3
         # self.Parser.add_argument("--output_stride", type=int, default=None,
-        #                          help="Stride of the output layer")
+        #                          help="Stride of the output layer")
         self.Parser.add_argument("--use_aux_head", action="store_true",
                                  help="Do you use auxiliary head during segmentation?")
         ### feature guidance module
@@ -97,8 +97,7 @@ class Opts(object):
         self.Parser.add_argument("--fg_start_stage", type=int, default=1,
                                 help="The starting stage of feature map guide")
         self.Parser.add_argument("--fg_resize_stage", type=int, default=0,
-                                help=
-                                "The stage for resizing feature maps \
+                                help= "The stage for resizing feature maps \
                                 before concatenation 0 | -1, \
                                 0 has better result, but may be slower in some heads")
         self.Parser.add_argument("--fg_bottle", type=int, default=1,
@@ -109,8 +108,8 @@ class Opts(object):
                                 help="Use feature guide (cslayer)?")
         self.Parser.add_argument("--fg_svattn", type=int, default=1,
                                 help="Use the scale variant attention in the segmentation head? \
-                                    -3 vanilla max attention | -2 vanilla avg attention | -1 final avg attention \
-                                    | 0 none attention | 1 scale variant attention")
+                                -3 vanilla max attention | -2 vanilla avg attention | -1 final avg attention \
+                                | 0 none attention | 1 scale variant attention")
         self.Parser.add_argument("--fg_svattn_divisor", type=int, default=4,
                                 help="The divisor for pool size")
         self.Parser.add_argument("--moc_order", action="store_false",
@@ -129,8 +128,8 @@ class Opts(object):
                                 help="Use selayer in link module vit?")
         ### tested modules
         self.Parser.add_argument("--fg_for_head", action="store_true",
-                                help="Use the feature map guide the segmentation head? \
-                                    Only useful in fg_nostage5")
+                                help="Use the feature map to guide the segmentation head? \
+                                Only useful in fg_nostage5")
         ### low-efficacy modules
         self.Parser.add_argument("--fg_seghead_vit", type=int, default=0,
                                 help="Use vit after segmentation head?")
@@ -151,7 +150,7 @@ class Opts(object):
         self.Parser.add_argument("--max_train_iters", type=int, default=None,
                                 help="the total training iterations.")
         self.Parser.add_argument("--stop_station", type=int, default=100,
-                                help="The stop epoch NO. for efficient training")
+                                help="The stop epoch number for efficient training")
         self.Parser.add_argument("--exp_base", type=str, default="exp",
                                 help="The base folder of exp output") 
         self.Parser.add_argument("--exp_level", type=str, default="",
@@ -167,9 +166,9 @@ class Opts(object):
         self.Parser.add_argument("--clsval_mode", type=str, default="linear",
                                 help="linear | 5nn") # only in classification task
         self.Parser.add_argument("--cpu_5nn", action="store_false",
-                                help="use 5nn in CPU to save memory") # only in classification task
+                                help="use 5nn in CPU to save memory") # only in the classification task
         self.Parser.add_argument("--knn_k", type=int, default=5,
-                                help="The numer of nearest neighbor in kNN monitor")
+                                help="The number of nearest neighbours in kNN monitor")
         self.Parser.add_argument("--val_start_epoch", type=int, default=None,
                                 help="The validation starting point")
         self.Parser.add_argument("--tsne_mode", action="store_true",
@@ -181,11 +180,11 @@ class Opts(object):
         self.Parser.add_argument("--lr", type=float, default=None, 
                                  help="The minimum learning rate")
         self.Parser.add_argument("--warmup_init_lr", type=float, default=None, 
-                                help="warming up learning rate for schedular")
+                                help="warming up learning rate for scheduler")
         self.Parser.add_argument("--max_lr", type=float, default=None, 
-                                help="maximum learning rate for schedular")
+                                help="maximum learning rate for scheduler")
         self.Parser.add_argument("--lr_factor", type=float, default=0.05, 
-                                help="The divior of divident max_lr and quotient lr, for sgd")
+                                help="The divisor of divident max_lr and quotient lr, for sgd")
         self.Parser.add_argument("--lr_decay", action="store_false",
                                 help="learning rate decay")
         self.Parser.add_argument("--schedular", type=str, default="mycosine",
@@ -200,7 +199,7 @@ class Opts(object):
         self.Parser.add_argument("--amsgrad", action="store_true",
                                 help="whether to use the AMSGrad variant of \
                                 this algorithm from the paper \
-                                    `On the Convergence of Adam and Beyond`_(default: False)")
+                                `On the Convergence of Adam and Beyond`_(default: False)")
 
         # transfer
         self.Parser.add_argument("--lincls", action="store_true",
@@ -230,7 +229,7 @@ class Opts(object):
         self.Parser.add_argument("--loss_reduction", type=str, default="mean",
                                 help="mean | sum")
         self.Parser.add_argument("--aux_weight", type=float, default=0.4,
-                                help="The loss weight of segmentation auxiliary branch.")
+                                help="The loss weight of the segmentation auxiliary branch.")
         self.Parser.add_argument("--metric_type", type=str, default="micro",
                                 help="macro | micro")
         self.Parser.add_argument("--ignore_idx", type=int, default=-100,
@@ -239,7 +238,7 @@ class Opts(object):
         self.Parser.add_argument("--max_monitor_iter", type=int, default=-1,
                                 help="the maximum monitor iteration for multibox loss")
         self.Parser.add_argument("--update_wt_freq", type=int, default=None,
-                                help="frequency to update wegiht")
+                                help="frequency to update weight")
         ## ntxent
         self.Parser.add_argument("--temperature", type=float, default=0.5,
                                 help="temperature for ntxent")
@@ -249,10 +248,10 @@ class Opts(object):
         
         ## supplementary metrics for classification
         self.Parser.add_argument("--sup_metrics", action="store_true",
-                                help="For small dataset. Supplementary metrics for classifcation, \
+                                help="For a small dataset. Supplementary metrics for classification, \
                                 including recall, precision, specificity, F1Score")
         self.Parser.add_argument("--topk", type=tuple, default=(1, 5),
-                                help="For small dataset. Supplementary metrics for classifcation, \
+                                help="For a small dataset. Supplementary metrics for classification, \
                                 including recall, precision, specificity, F1Score")
 
         ## rotation
@@ -263,9 +262,9 @@ class Opts(object):
         self.Parser.add_argument("--range_angle_shaking", action="store_true",
                                 help="Random angle degrees in range each iter?")
         self.Parser.add_argument("--angle_shaking_divisor", type=int, default=None,
-                                help="What is proportion of divisor?")
+                                help="What is the proportion of the divisor?")
         self.Parser.add_argument("--region_rot", action="store_false",
-                                help="Rotate only center circular region? True | False")
+                                help="Rotate only the centre circular region? True | False")
 
 
         # module
@@ -276,17 +275,17 @@ class Opts(object):
         
         self.Parser.add_argument("--crop_mode", type=int, default=None,
                                 help="0 no crop (original rot) | 1 rectangle crop | 2 circle crop \
-                                    | 3 circle crop and rotation around original image point  ")
+                                | 3 circle crop and rotation around original image point  ")
         self.Parser.add_argument("--crop_ratio", type=float, default=None,
-                                help="How large ratio of region do you want to crop? (0, 1)")
+                                help="How large a ratio of the region do you want to crop? (0, 1)")
         self.Parser.add_argument("--mincrop_ratio", type=float, default=0.6,
                                 help="How minimum ratio of region do you want to crop? (0, 1)")
         self.Parser.add_argument("--random_pos", action="store_false",
-                                help="Do you use random position of rotated region?")
+                                help="Do you use a random position of the rotated region?")
         self.Parser.add_argument("--centre_rand", action="store_true",
                                 help="Random position in the centre or uniform pos?")
         self.Parser.add_argument("--crop_resize", action="store_false", # If false, could add additional len info (include swim mode)
-                                help="Do you want to resize image before croping?")
+                                help="Do you want to resize the image before cropping?")
         
     def parse(self, args=""):
         return (self.Parser.parse_args() if args == "" 
