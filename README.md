@@ -1,9 +1,9 @@
 # Exploiting Scale-Variant Attention for Segmenting Small Medical Objects
 Welcome to the official implementation of ``Exploiting Scale-Variant Attention for Segmenting Small Medical Objects''. This repository offers a robust toolkit designed for advanced tasks in deep learning and computer vision, specifically tailored for semantic segmentation. It supports features such as training progress visualization, logging, and calculation of standard metrics.
 
-[**Exploiting Scale-Variant Attention for Segmenting Small Medical Objects**](https://arxiv.org/abs/2407.07720)  
+[**Exploiting Scale-Variant Attention for Segmenting Small Medical Objects**](https://doi.org/10.1109/TNNLS.2025.3645355)  
 Wei Dai, Rui Liu, Zixuan Wu, Tianyi Wu, Min Wang, Junxian Zhou, Yixuan Yuan, Jun Liu        
-Under review by a peer-reviewed journal, 2024. [[arXiv](https://arxiv.org/pdf/2407.07720v4)] <!-- [[Paper](https://www.sciencedirect.com/science/article/abs/pii/S0893608024002740?dgcid=rss_sd_all)] -->
+Accepted in IEEE Transactions on Neural Networks and Learning Systems, 2026. [[Paper](https://doi.org/10.1109/TNNLS.2025.3645355)][[arXiv](https://arxiv.org/pdf/2407.07720v4)]
 
 
 ![](./readme/architecture_animation.gif)
