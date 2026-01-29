@@ -51,12 +51,10 @@ To perform inference evaluation on various datasets, it is important to organize
 
 If you use this implementation in your research, please consider citing our paper as follows:
 
-    @misc{dai2024svanet,
-      title={Exploiting Scale-Variant Attention for Segmenting Small Medical Objects},
+    @article{dai2026exploiting,
+      title={Exploiting scale-variant attention for segmenting small medical objects},
       author={Dai, Wei and Liu, Rui and Wu, Zixuan and Wu, Tianyi and Wang, Min and Zhou, Junxian and Yuan, Yixuan and Liu, Jun},
-      year={2024},
-      eprint={2407.07720},
-      archivePrefix={arXiv},
-      primaryClass={eess.IV},
-      url={https://arxiv.org/abs/2407.07720}, 
+      journal={IEEE Transactions on Neural Networks and Learning Systems},
+      year={2026},
+      publisher={IEEE}
     }
