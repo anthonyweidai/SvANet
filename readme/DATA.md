@@ -1,5 +1,34 @@
 # Dataset preparation
 
+## Label processing
+
+All segmentation datasets use the same loader in `lib/data/segmentation/common.py`.
+For an image named `sample.jpg`, the loader reads `mask/sample.png`, applies the
+same geometric augmentation to both image and mask, and uses nearest-neighbor
+interpolation for masks. The resulting mask is returned as the integer `label`
+tensor; mask values are not rescaled or normalized.
+
+The mask convention for each supported dataset is:
+
+| Dataset | Label values | Meaning |
+| --- | --- | --- |
+| FIVES | `0` and non-zero foreground values | `0` is background; every non-zero pixel is the foreground vessel class. |
+| ISIC2018T1 and PolypGen | `0` and `1` (or the source mask's binary foreground value) | `0` is background and the foreground is the `symptoms` class. |
+| TissueNet | `0`, `1`, and `2` | Background, cell, and nucleus, respectively. |
+| ATLAS | `0`, `1`, and `2` | Background, liver, and tumour, respectively. |
+| KiTS23 | `0`, `1`, `2`, and `3` | Background, kidney, tumour, and cyst, respectively. |
+
+FIVES therefore does not use disease names as pixel labels. Its segmentation
+annotation is a binary vessel mask: background pixels remain `0`, and all
+non-zero annotation pixels are the foreground vessel class. The class names in
+`lib/utils/variables/defaultVar.py` describe the dataset's image categories and
+do not change this pixel-level mask rule.
+
+The ATLAS and KiTS23 volumes are converted to 2-D images before training by
+`tools/niftiFileExtractor.py`. It keeps the source integer labels, writes image
+slices as JPEG files and palette-encoded mask slices as PNG files, using the
+same slice indices for each image/mask pair.
+
 ## FIVES Dataset
 The FIVES dataset comprises 800 high-resolution, multi-disease color fundus photographs with pixel-wise manual annotations. These annotations were standardized through a crowdsourcing effort among medical experts. Each image was evaluated for quality based on factors like illumination, color distortion, blur, and contrast.
 
